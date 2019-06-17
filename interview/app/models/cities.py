@@ -125,11 +125,11 @@ class City(object):
         response = self.cursor.fetchone()
 
         return response[0] > 0
-
+# Changed temp format and added F to temp display with json 
     def to_json(self):
         return {
             'name': self.name,
-            'temp': self.temp,
+            'temp': str(self.temp)+" F" ,
             'pressure': self.pressure,
             'humidity': self.humidity
         }
