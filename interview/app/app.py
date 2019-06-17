@@ -18,8 +18,24 @@ User(connection=persistence.connection).bootstrap()
 def create_user():
     name = request.get_json()['name']
     # Add new user to database 
-    user = User(connection=persistence.connection, name=name)
-    user.create()
+    try:
+        user = User(connection=persistence.connection, name=name)
+        user.create()
+    except Exception as exc:
+        response = app.response_class(
+            response=json.dumps({
+                'message': "User already Exists"
+            }),
+            status=400,
+            mimetype='application/json'
+        )
+        return response
+    finally:
+        user.close()
+
+  
+
+
     response = app.response_class(
         response=json.dumps(user.to_json()),
         status=201,
